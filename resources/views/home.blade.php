@@ -144,33 +144,50 @@
 {{-- ═══ SCRIPT CAROUSEL ═══ --}}
 @push('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', () => {
     const slides    = document.querySelectorAll('.carousel-slide');
     const dots      = document.querySelectorAll('.dot');
     const prevBtn   = document.getElementById('prev-btn');
     const nextBtn   = document.getElementById('next-btn');
-    let   current   = 0;
-    let   timer     = null;
+    const heroEl    = document.getElementById('hero');
+    
+    if (!slides.length || !dots.length) return;
+    
+    let current   = 0;
+    let timer     = null;
 
     function goTo(index) {
         /* Désactiver ancien slide */
-        slides[current].style.opacity = '0';
-        slides[current].querySelector('.slide-content').style.opacity = '0';
-        slides[current].querySelector('.slide-content').style.transform = 'translateY(24px)';
-        dots[current].style.width = '10px';
-        dots[current].style.background = 'rgba(255,255,255,0.4)';
+        slides[current].classList.add('!opacity-0');
+        slides[current].classList.remove('!opacity-100');
+        if (slides[current].querySelector('.slide-content')) {
+            slides[current].querySelector('.slide-content').classList.add('!opacity-0', '!translate-y-6');
+            slides[current].querySelector('.slide-content').classList.remove('!opacity-100', '!translate-y-0');
+        }
+        if (dots[current]) {
+            dots[current].style.width = '10px';
+            dots[current].style.background = 'rgba(255,255,255,0.4)';
+        }
 
-        /* Activer nouveau slide */
+        /* Calculer le nouvel index */
         current = (index + slides.length) % slides.length;
-        slides[current].style.opacity = '1';
-        dots[current].style.width = '28px';
-        dots[current].style.background = '#C8992A';
+        
+        /* Activer nouveau slide */
+        slides[current].classList.add('!opacity-100');
+        slides[current].classList.remove('!opacity-0');
+        if (dots[current]) {
+            dots[current].style.width = '28px';
+            dots[current].style.background = '#C8992A';
+        }
 
         /* Animer le contenu */
         setTimeout(() => {
             const content = slides[current].querySelector('.slide-content');
-            content.style.opacity = '1';
-            content.style.transform = 'translateY(0)';
-        }, 400);
+            if (content) {
+                content.classList.add('!opacity-100', '!translate-y-0');
+                content.classList.remove('!opacity-0', '!translate-y-6');
+            }
+        }, 100);
     }
 
     function startAuto() {
@@ -183,8 +200,8 @@
     }
 
     /* Boutons */
-    nextBtn.addEventListener('click', () => { goTo(current + 1); startAuto(); });
-    prevBtn.addEventListener('click', () => { goTo(current - 1); startAuto(); });
+    if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); startAuto(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); startAuto(); });
 
     /* Dots */
     dots.forEach((dot, i) => {
@@ -192,16 +209,20 @@
     });
 
     /* Swipe mobile */
-    let touchStartX = 0;
-    document.getElementById('hero').addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
-    document.getElementById('hero').addEventListener('touchend', e => {
-        const diff = touchStartX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) { diff > 0 ? goTo(current + 1) : goTo(current - 1); startAuto(); }
-    });
+    if (heroEl) {
+        let touchStartX = 0;
+        heroEl.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+        heroEl.addEventListener('touchend', e => {
+            const diff = touchStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 50) { diff > 0 ? goTo(current + 1) : goTo(current - 1); startAuto(); }
+        });
+    }
 
     /* Pause au survol */
-    document.getElementById('hero').addEventListener('mouseenter', stopAuto);
-    document.getElementById('hero').addEventListener('mouseleave', startAuto);
+    if (heroEl) {
+        heroEl.addEventListener('mouseenter', stopAuto);
+        heroEl.addEventListener('mouseleave', startAuto);
+    }
 
     /* Scroll indicator */
     window.addEventListener('scroll', () => {
@@ -212,6 +233,7 @@
     /* Init */
     goTo(0);
     startAuto();
+});
 </script>
 @endpush
 
