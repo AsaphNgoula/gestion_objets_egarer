@@ -25,4 +25,10 @@ class ObjetTrouve extends Model
     protected $casts = [
         'date_decouverte' => 'date',
     ];
+
+    // Un objet trouvé peut avoir plusieurs mises en relation
+    public function misesEnRelation()
+    {
+        return $this->hasMany(MiseEnRelation::class, 'objet_trouve_id');
+    }
 }

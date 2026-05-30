@@ -8,4 +8,6 @@ Alpine.start();
 
 import './navbar.js';
 
-import './carousel.js'
+import './carousel.js';
+
+import './admin.js';

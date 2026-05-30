@@ -26,4 +26,16 @@ class DeclarationPerte extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Une déclaration peut avoir plusieurs demandes
+    public function demandes()
+    {
+        return $this->hasMany(DemandeAssistance::class, 'declaration_perte_id');
+    }
+
+    // Une déclaration peut avoir plusieurs mises en relation
+    public function misesEnRelation()
+    {
+        return $this->hasMany(MiseEnRelation::class, 'declaration_perte_id');
+    }
 }

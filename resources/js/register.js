@@ -42,3 +42,26 @@ function checkStrength(password) {
     text.textContent = level.label;
     text.className = 'text-xs font-bold min-w-[70px] text-right ' + level.textColor;
 }
+
+function togglePassword(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+    input.setAttribute('type', type);
+    btn.querySelector('.eye-open').classList.toggle('hidden');
+    btn.querySelector('.eye-closed').classList.toggle('hidden');
+}
+function checkStrength(pwd) {
+    const bar = document.getElementById('strength-bar');
+    const text = document.getElementById('strength-text');
+    if (!pwd) { bar.style.width = '0%'; bar.style.backgroundColor = 'white/30'; text.innerText = '--'; return; }
+    let strength = 0;
+    if (pwd.length >= 8) strength += 25;
+    if (pwd.match(/[A-Z]/)) strength += 25;
+    if (pwd.match(/[0-9]/)) strength += 25;
+    if (pwd.match(/[^A-Za-z0-9]/)) strength += 25;
+    bar.style.width = strength + '%';
+    if (strength <= 25) { bar.style.backgroundColor = '#EF4444'; text.innerText = 'Faible'; }
+    else if (strength <= 50) { bar.style.backgroundColor = '#F59E0B'; text.innerText = 'Moyen'; }
+    else if (strength <= 75) { bar.style.backgroundColor = '#3B82F6'; text.innerText = 'Bon'; }
+    else { bar.style.backgroundColor = '#10B981'; text.innerText = 'Fort'; }
+}

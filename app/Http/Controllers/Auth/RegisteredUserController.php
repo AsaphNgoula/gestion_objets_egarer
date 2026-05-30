@@ -27,26 +27,29 @@ class RegisteredUserController extends Controller
      * Handle an incoming registration request.
      *
      * @throws ValidationException
+        $user = User::create([
+    
      */
     public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'digits:9'], 
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        {
+            $request->validate([
+                'name'     => ['required', 'string', 'max:255'],
+                'phone'    => ['nullable', 'string', 'max:20'],
+                'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            $user = User::create([
+                'name'     => $request->name,
+                'phone'    => $request->phone,
+                'email'    => $request->email,
+                'role'     => 'proprietaire',   // ← toujours propriétaire à l'inscription
+                'password' => Hash::make($request->password),
+            ]);
 
-        event(new Registered($user));
+            event(new Registered($user));
+            Auth::login($user);
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
-    }
+            return redirect()->route('proprietaire.dashboard');
+        }
 }

@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         slides[current].style.opacity = '0';
         slides[current].querySelector('.slide-content').style.opacity  = '0';
         slides[current].querySelector('.slide-content').style.transform = 'translateY(24px)';
-        dots[current].style.width      = '10px';
+        dots[current].style.width = '10px';
         dots[current].style.background = 'rgba(255,255,255,0.4)';
 
         // Calculer nouveau slide

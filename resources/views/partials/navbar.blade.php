@@ -64,7 +64,7 @@
                     class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-xl
                             border border-gray-100 overflow-hidden z-50">
 
-                    <a href="{{ route('dashboard') }}"
+                    <a href="{{ route('proprietaire.dashboard') }}"
                     class="flex items-center gap-2 px-4 py-3 text-[13.5px] text-gray-700
                             hover:bg-[#EFF6FF] hover:text-[#1B3A6B] transition font-medium">
                         🏠 Mon espace
