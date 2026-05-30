@@ -47,19 +47,50 @@
         {{-- BOUTON + HAMBURGER --}}
         <div class="flex items-center gap-3">
 
-            @auth
-                {{-- Si connecté : afficher le nom --}}
-                <a href="{{ route('dashboard') }}"
-                   class="flex items-center gap-2 bg-[#C8992A] text-white text-[13.5px] font-bold px-5 py-2 rounded-lg shadow hover:bg-[#b8861e] transition">
+                    @auth
+            {{-- Menu utilisateur connecté --}}
+            <div class="relative" id="user-menu-wrapper">
+
+                {{-- Bouton nom utilisateur --}}
+                <button id="user-menu-btn"
+                        class="flex items-center gap-2 bg-[#C8992A] text-white text-[13.5px]
+                            font-bold px-4 py-2 rounded-lg shadow hover:bg-[#b8861e] transition">
                     👤 {{ Auth::user()->name }}
-                </a>
-            @else
-                {{-- Sinon : bouton Se connecter --}}
-                <a href="{{ route('login') }}"
-                   class="flex items-center gap-2 bg-[#C8992A] text-white text-[13.5px] font-bold px-5 py-2 rounded-lg shadow hover:bg-[#b8861e] transition">
-                    Se connecter
-                </a>
-            @endauth
+                    <span class="text-[10px]">▼</span>
+                </button>
+
+                {{-- Dropdown --}}
+                <div id="user-dropdown"
+                    class="hidden absolute right-0 top-12 w-48 bg-white rounded-xl shadow-xl
+                            border border-gray-100 overflow-hidden z-50">
+
+                    <a href="{{ route('dashboard') }}"
+                    class="flex items-center gap-2 px-4 py-3 text-[13.5px] text-gray-700
+                            hover:bg-[#EFF6FF] hover:text-[#1B3A6B] transition font-medium">
+                        🏠 Mon espace
+                    </a>
+
+                    <div class="border-t border-gray-100"></div>
+
+                    {{-- Déconnexion --}}
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                                class="w-full flex items-center gap-2 px-4 py-3 text-[13.5px]
+                                    text-red-500 hover:bg-red-50 transition font-medium">
+                            🚪 Se déconnecter
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+        @else
+            <a href="{{ route('login') }}"
+            class="flex items-center gap-2 bg-[#C8992A] text-white text-[13.5px] font-bold
+                    px-5 py-2 rounded-lg shadow hover:bg-[#b8861e] transition">
+                Se connecter
+            </a>
+        @endauth
 
             {{-- Hamburger mobile --}}
             <button id="hamburger" class="md:hidden flex flex-col gap-[5px] p-1 bg-transparent border-none cursor-pointer">
