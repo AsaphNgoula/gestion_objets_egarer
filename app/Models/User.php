@@ -29,4 +29,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // Un utilisateur peut avoir plusieurs déclarations
+    public function declarations()
+    {
+        return $this->hasMany(DeclarationPerte::class);
+    }
 }
+
+
