@@ -70,3 +70,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/mise-en-relation', [MiseEnRelationController::class, 'store'])->name('mise-en-relation.store');
     Route::patch('/mise-en-relation/{mer}/statut', [MiseEnRelationController::class, 'updateStatut'])->name('mise-en-relation.statut');
 });
+
+
+
+Route::get('/objets-trouves', [ObjetTrouveController::class, 'index'])->name('objets.index');
+Route::get('/objets-trouves/{objet}', [ObjetTrouveController::class, 'show'])->name('objets.show');

@@ -7,6 +7,39 @@ use App\Models\ObjetTrouve;
 
 class ObjetTrouveController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = ObjetTrouve::where('statut', '!=', 'restitue')
+                             ->orderBy('created_at', 'desc');
+
+        // Recherche
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('nom', 'like', '%'.$request->search.'%')
+                  ->orWhere('description', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        // Filtre catégorie
+        if ($request->categorie) {
+            $query->where('categorie', $request->categorie);
+        }
+
+        // Filtre lieu
+        if ($request->lieu) {
+            $query->where('lieu', $request->lieu);
+        }
+
+        $objets = $query->paginate(12);
+
+        return view('objets-trouves', compact('objets'));
+    }
+
+    public function show(ObjetTrouve $objet)
+    {
+        return view('objet-detail', compact('objet'));
+    }
+
     public function create()
     {
         return view('deposer');
@@ -15,15 +48,14 @@ class ObjetTrouveController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'categorie'        => 'required|string',
-            'description'      => 'required|string|min:10',
-            'lieu'             => 'required|string',
-            'date_decouverte'  => 'required|date|before_or_equal:today',
-            'inventeur_nom'    => 'required|string|max:255',
-            'inventeur_tel'    => 'required|string|max:20',
+            'categorie'       => 'required|string',
+            'description'     => 'required|string|min:10',
+            'lieu'            => 'required|string',
+            'date_decouverte' => 'required|date|before_or_equal:today',
+            'inventeur_nom'   => 'required|string|max:255',
+            'inventeur_tel'   => 'required|string|max:20',
         ]);
 
-        // Upload photo sécurisée (hors dossier public)
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')
