@@ -5,6 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ObjetTrouveController;
 use App\Http\Controllers\ProprietaireController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\CoffreFortController;
+use App\Http\Controllers\Admin\ComparaisonController;
+use App\Http\Controllers\Admin\DemandesController;
+use App\Http\Controllers\Admin\JournalController;
+use App\Http\Controllers\Admin\MiseEnRelationController;
 
 // ── Pages publiques ──
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -33,3 +38,35 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 require __DIR__.'/auth.php';
+
+
+
+// Page dépôt anonyme
+Route::get('/deposer', [ObjetTrouveController::class, 'create'])->name('deposer');
+Route::post('/deposer', [ObjetTrouveController::class, 'store'])->name('deposer.store');
+Route::get('/confirmation', [ObjetTrouveController::class, 'confirmation'])->name('confirmation');
+
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Coffre-fort
+    Route::get('/coffre-fort', [CoffreFortController::class, 'index'])->name('coffre-fort');
+    Route::patch('/coffre-fort/{objet}/statut', [CoffreFortController::class, 'updateStatut'])->name('coffre-fort.statut');
+
+    // Comparaison
+    Route::get('/comparaison', [ComparaisonController::class, 'index'])->name('comparaison');
+
+    // Demandes
+    Route::get('/demandes', [DemandesController::class, 'index'])->name('demandes');
+    Route::patch('/demandes/{demande}/statut', [DemandesController::class, 'updateStatut'])->name('demandes.statut');
+    Route::post('/demandes/{demande}/repondre', [DemandesController::class, 'repondre'])->name('demandes.repondre');
+
+    // Journal
+    Route::get('/journal', [JournalController::class, 'index'])->name('journal');
+
+    // Mise en relation
+    Route::get('/mise-en-relation', [MiseEnRelationController::class, 'index'])->name('mise-en-relation');
+    Route::post('/mise-en-relation', [MiseEnRelationController::class, 'store'])->name('mise-en-relation.store');
+    Route::patch('/mise-en-relation/{mer}/statut', [MiseEnRelationController::class, 'updateStatut'])->name('mise-en-relation.statut');
+});

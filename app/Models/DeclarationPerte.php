@@ -7,14 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class DeclarationPerte extends Model
 {
     protected $fillable = [
-        'user_id',
-        'nom',
-        'categorie',
-        'description',
-        'signes_particuliers',
-        'lieu',
-        'date_perte',
-        'statut',
+    'user_id', 'nom', 'marque', 'couleur',
+    'categorie', 'description', 'signes_particuliers',
+    'lieu', 'lieu_precis', 'date_perte', 'heure_perte',
+    'circonstances', 'moyen_contact', 'commentaires',
+    'photo_justificatif', 'statut',
     ];
 
     protected $casts = [
