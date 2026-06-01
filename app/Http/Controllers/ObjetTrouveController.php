@@ -59,7 +59,7 @@ class ObjetTrouveController extends Controller
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')
-                        ->store('objets-trouves', 'private');
+                        ->store('objets-trouves', 'public');
         }
 
         ObjetTrouve::create([

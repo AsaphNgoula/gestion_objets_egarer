@@ -86,7 +86,7 @@
                 </div>
                 <div>
                     <strong class="text-white text-sm block">Téléphone</strong>
-                    <span class="text-white/60 text-sm">+237 6XX XX XX XX</span>
+                    <span class="text-white/60 text-sm">+237 640395844</span>
                 </div>
             </div>
 
@@ -96,7 +96,7 @@
                 </div>
                 <div>
                     <strong class="text-white text-sm block">Email</strong>
-                    <span class="text-white/60 text-sm">contact@dschanglost.cm</span>
+                    <span class="text-white/60 text-sm">asaphngoula237@gmail.com</span>
                 </div>
             </div>
         </div>

@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\ComparaisonController;
 use App\Http\Controllers\Admin\DemandesController;
 use App\Http\Controllers\Admin\JournalController;
 use App\Http\Controllers\Admin\MiseEnRelationController;
+use App\Http\Controllers\PageController;
+
 
 // ── Pages publiques ──
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -75,3 +77,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
 Route::get('/objets-trouves', [ObjetTrouveController::class, 'index'])->name('objets.index');
 Route::get('/objets-trouves/{objet}', [ObjetTrouveController::class, 'show'])->name('objets.show');
+
+
+Route::get('/comment-ca-marche', [PageController::class, 'comment'])->name('comment');
